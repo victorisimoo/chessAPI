@@ -83,6 +83,9 @@ Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
+- [Autofac](https://autofac.org/)
+- [Dapper](https://github.com/DapperLib/Dapper)
+- [Serilog](https://serilog.net/)
 - [PostgreSQL](https://www.postgresql.org/) - Database
 - [ASP.Net](https://dotnet.microsoft.com/en-US/apps/aspnet) - Server Framework
 - [.Net 7](https://dotnet.microsoft.com/en-US/) - Server Environment

@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using chessAPI;
 using chessAPI.business.interfaces;
 using chessAPI.models.player;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,12 @@ try
 {
     Log.Information("chessAPI starting");
     var builder = WebApplication.CreateBuilder(args);
+
+    var connectionStrings = new connectionStrings();
+    builder.Services.AddOptions();
+    builder.Services.Configure<connectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
+    builder.Configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
+
     // Two-stage initialization (https://github.com/serilog/serilog-aspnetcore)
     builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom
              .Configuration(context.Configuration)
@@ -28,7 +35,6 @@ try
     // Autofac como inyección de dependencias
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
     builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new chessAPI.dependencyInjection<int, int>()));
-
     var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseMiddleware(typeof(chessAPI.customMiddleware<int>));
