@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  pgdata:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_PASSWORD=misDatos2023!
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=chessDB
+    volumes:
+      - 'pg_main_data:/var/lib/postgresql/data/'
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=myPassword
+      - PGADMIN_DEFAULT_EMAIL=some.email@gmail.com
+    ports:
+      - '5050:80'
+    volumes:
+      - pga4data:/var/lib/pgadmin
+    depends_on:
+      - pgdata
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  pg_main_data:
+    external: true
+  pga4data:
+    external: true
