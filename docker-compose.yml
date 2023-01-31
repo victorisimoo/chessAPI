@@ -3,6 +3,7 @@ version: '3.8'
 services:
   pgdata:
     image: 'postgres:latest'
+    container_name: landivardb
     environment:
       - POSTGRES_PASSWORD=misDatos2023!
       - POSTGRES_USER=postgres
@@ -11,6 +12,17 @@ services:
       - 'pg_main_data:/var/lib/postgresql/data/'
     ports:
       - '5432:5432'
+    networks:
+      - backend
+  liquibase:
+    image: 'liquibase/liquibase'
+    container_name: liquibase_container
+    volumes:
+      - ./liquibase:/liquibase/changelog
+    depends_on:
+      - pgdata
+    command: --url=jdbc:postgresql://landivardb:5432/chessDB?currentSchema=public --username=postgres --password=misDatos2023! --changeLogFile=/liquibase/changelog/changelog-root.xml generate-changelog
+    #command: --url=jdbc:postgresql://landivardb:5432/chessDB?currentSchema=public --username=postgres --password=misDatos2023! --changeLogFile=changelog.xml update
     networks:
       - backend
   pgadmin:
