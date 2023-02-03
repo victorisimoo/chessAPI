@@ -39,6 +39,12 @@ public sealed class clsPlayerRepository<TI, TC> : clsDataAccess<clsPlayerEntityM
         throw new NotImplementedException();
     }
 
+    public async Task<IEnumerable<clsPlayerEntityModel<TI, TC>>> getPlayers()
+    {
+        var p = new DynamicParameters();
+        return await getALL(p).ConfigureAwait(false);
+    }
+
     public Task<IEnumerable<clsPlayerEntityModel<TI, TC>>> getPlayersByGame(TI gameId)
     {
         throw new NotImplementedException();
